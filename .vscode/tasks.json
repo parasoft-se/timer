@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Configure and Build",
+            "type": "shell",
+            "command": "bash -c 'mkdir .build;cd .build;cmake -DCPPTEST_COVERAGE=ON ..;make'",
+            "group": "build"
+        },
+        {
+            "label": "CMake: Run",
+            "type": "shell",
+            "command": "bash -c 'cd .build;rm -rf cpptest-coverage/Timer/Timer.clog;./timer;make cpptestcov-compute cpptestcov-merge cpptestcov-suppress cpptestcov-report'",
+            "group": "build"
+        },
+        {
+            "label": "CMake: Update Coverage",
+            "type": "shell",
+            "command": "bash -c 'cd .build;make cpptestcov-suppress cpptestcov-report'",
+            "group": "build"
+        },
+        {
+            "label": "Bazel: Configure and Build",
+            "type": "shell",
+            "command": "bash -c 'bazel clean; bazel run --config=cpptest_coverage'",
+            "group": "build"
+        },
+        {
+            "label": "Bazel: Run",
+            "type": "shell",
+            "command": "bash -c 'rm -rf cpptest_results.clog; bazel-bin/Timer.elf; mkdir -p .coverage/cumulative; mkdir -p .coverage/lastrun; cpptestcov compute -map .cpptest -clog cpptest_results.clog -out .coverage/lastrun; cpptestcov index .coverage/lastrun; cpptestcov merge .coverage/cumulative .coverage/lastrun; cpptestcov suppress .coverage/cumulative; cpptestcov index .coverage/cumulative; cpptestcov report text .coverage/cumulative'",
+            "group": "build"
+        },
+        {
+            "label": "Bazel: Update Coverage",
+            "type": "shell",
+            "command": "bash -c 'cpptestcov suppress .coverage/cumulative; cpptestcov index .coverage/cumulative; cpptestcov report text .coverage/cumulative'",
+            "group": "build"
+        },
+    ]
+}

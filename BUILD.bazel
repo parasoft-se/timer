@@ -1,0 +1,34 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+cc_binary(
+    name = "Timer",
+    srcs = [
+        "clock.c",
+        "driver.c",
+        "stdinout.c",
+        "timer.c",
+        "clock.h",
+        "consts.h",
+        "inout.h",
+        "timer.h"
+    ],
+    copts = [ "-DSTDINPUT" ],
+)
+
+# Be sure to set "path" to C/C++test Coverage installation in WORKSPACE file.
+load("@cpptest//:integration/bazel/cpptest.bzl",
+    "cpptest_code_coverage_executable"
+)
+targets = [ "Timer" ]
+
+# Build test-binary with code coverage instrumentation (parameters set in .bazelrc):
+# > bazel run --config=cpptest_coverage
+# Execute test-binary:
+# > bazel-bin/Timer.elf
+# Generate coverage report:
+# > cpptestcov compute -map .cpptest -clog cpptest_results.clog -out .coverage
+# > cpptestcov report text .coverage
+cpptest_code_coverage_executable(
+    name = "cpptest_coverage",
+    deps = targets, 
+)

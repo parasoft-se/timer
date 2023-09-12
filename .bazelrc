@@ -1,0 +1,2 @@
+# Default parameters to instrument for coverage
+run:cpptest_coverage //:cpptest_coverage --@cpptest//:compiler-config=gcc_10-64 --@cpptest//:project-name=Timer --@cpptest//:line-coverage --@cpptest//:statement-coverage --@cpptest//:block-coverage --@cpptest//:decision-coverage --@cpptest//:simple-condition-coverage --@cpptest//:mcdc-coverage --@cpptest//:function-coverage --@cpptest//:call-coverage
