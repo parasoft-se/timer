@@ -153,3 +153,13 @@ void list_timers()
     print_string("\n\n");
 }
 
+int validate_size(int size)
+{
+    if ( size < BUF_SIZE )
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
