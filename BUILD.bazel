@@ -16,7 +16,7 @@ cc_binary(
 )
 
 # Be sure to set "path" to C/C++test Coverage installation in WORKSPACE file.
-load("@cpptest//integration/bazel:cpptest.bzl",
+load("@cpptest//:integration/bazel/cpptest.bzl",
     "cpptest_code_coverage_executable"
 )
 targets = [ "Timer" ]
