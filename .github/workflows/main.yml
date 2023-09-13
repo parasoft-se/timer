@@ -49,6 +49,7 @@ jobs:
       uses: parasoft/run-cpptest-action@2.0.1
       # Optional parameters for 'run-cpptest-action'.
       with:
+        installDir: '/opt/parasoft/cpptest/std'
         # For CMake-based projects, use a compile_commands.json file as the input for analysis. 
         input: build/compile_commands.json
         # Uncomment if you are using C/C++test 2020.2 to generate a SARIF report:
