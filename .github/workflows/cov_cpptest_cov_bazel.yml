@@ -45,7 +45,7 @@ jobs:
 
       # Builds your CMake project. (This step is optional, as it is not required for code analysis).
       - name: Compute Coverage
-        run:  bazel-CovApplication/external/cpptest/bin/cpptestcov compute -map .cpptest -clog cpptest_results.clog -settings /home/parasoft-se/cpptest_cov.settings -out .coverage
+        run:  bazel-timer/external/cpptest/bin/cpptestcov compute -map .cpptest -clog cpptest_results.clog -settings /home/parasoft-se/cpptest_cov.settings -out .coverage
 
       - name: Report Coverage to Console
-        run:  bazel-CovApplication/external/cpptest/bin/cpptestcov report text .coverage
+        run:  bazel-timer/external/cpptest/bin/cpptestcov report text .coverage
