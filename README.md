@@ -23,3 +23,15 @@ HostName github.com
 User git
 IdentityFile ~/.ssh/id_ed25519
 ```
+
+## Building
+### Make
+```
+make clean all
+```
+### CMake
+```
+cmake .
+make
+```
+### BAZEL
