@@ -12,7 +12,7 @@ cc_binary(
         "inout.h",
         "timer.h"
     ],
-    copts = [ "-DSTDINPUT" ],
+    copts = [ "" ], # copts = [ "-DSTDINPUT" ],
 )
 
 # Be sure to set "path" to C/C++test Coverage installation in WORKSPACE file.
