@@ -43,7 +43,7 @@ jobs:
           echo "local_repository(name = \"cpptest\", path = \"/opt/parasoft/cpptest/std\")" >> WORKSPACE.bazel
 
       - name: Build and Generate BDF file
-        run: bazel run //:make_bdf --@cpptest//:compiler-config=gcc_11-64 --@cpptest/:project-name=timer
+        run: bazel run //:cpptest_bdf --@cpptest//:compiler-config=gcc_11-64
 
       # Runs code analysis with C/C++test.
       - name: Run C/C++test
