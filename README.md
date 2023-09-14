@@ -1,37 +1,53 @@
 # Timer
 
-## Cloning
-git clone git@github.com-parasoft-se:parasoft-se/timer.git
+# Usage with C/C++test Standard Edition
+## Overview
 
-## SSH Keys
-Download the .ssh files and put them in your ~/.ssh folder.
-Create an ssh config file in the same folder if it doesn't exist:
-```
-touch config
-```
-Update the contents to add the ```parasoft-se``` account:
-```
-#parasoft-se account
-Host github.com-parasoft-se
-HostName github.com
-User git
-IdentityFile ~/.ssh/id_ed25519_parasoft.se
+# Usage with C/C++test Coverage (Next Gen) Edition
 
-#a_different_github_account account
-Host github.com-a_different_github_account
-HostName github.com
-User git
-IdentityFile ~/.ssh/id_ed25519
-```
-
-## Building
 ### Make
 ```
 make clean all
 ```
 ### CMake
 ```
-cmake .
+mkdir .build
+cd .build
+cmake -DCPPTEST_COVERAGE=ON ..
 make
 ```
 ### BAZEL
+Basic compilation
+```
+bazel clean
+bazel build //:Timer
+```
+Instrumentation
+```
+bazel clean
+bazel run --config=cpptest_coverage
+```
+
+## Building with C/C++test Coverage (Next Gen) Edition
+### Make
+```
+make clean all
+```
+### CMake
+```
+mkdir .build
+cd .build
+cmake -DCPPTEST_COVERAGE=ON ..
+make
+```
+### BAZEL
+Basic compilation
+```
+bazel clean
+bazel build //:Timer
+```
+Instrumentation
+```
+bazel clean
+bazel run --config=cpptest_coverage
+```
