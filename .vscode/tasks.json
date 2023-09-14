@@ -38,6 +38,6 @@
             "type": "shell",
             "command": "bash -c 'cpptestcov suppress .coverage/cumulative; cpptestcov index .coverage/cumulative; cpptestcov report text .coverage/cumulative'",
             "group": "build"
-        },
+        }
     ]
 }
