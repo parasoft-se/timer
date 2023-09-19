@@ -12,7 +12,7 @@
  */
 void display_time()
 {
-    char buf[BUF_SIZE];
+    char buf[BUF_SIZE]; //
     time_t the_time = time(NULL);
     char *t = ctime(&the_time);
 
