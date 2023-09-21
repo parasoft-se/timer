@@ -12,12 +12,13 @@
  */
 void display_time()
 {
-    char buf[BUF_SIZE];
+    char buf[BUF_SIZE]; //
     time_t the_time = time(NULL);
     char *t = ctime(&the_time);
-    
+
     sprintf(buf, "\n\nCurrent Time and Date is %s\n\n", t);
     print_string(buf);
+    //adding a line of code here
 }
 
 
