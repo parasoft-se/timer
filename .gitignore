@@ -1,0 +1,5 @@
+.cpptest
+.coverage
+*.o
+*.exe
+*.clog
