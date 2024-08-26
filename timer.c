@@ -19,7 +19,10 @@ static int curr_index = 0;
 
 void init_timer()
 {
-    memset(timer_records, 0, sizeof(struct timer_record*) * BUF_SIZE); 
+    if ( timer_records != memset(timer_records, 0, sizeof(struct timer_record*) * BUF_SIZE) )
+    {
+        printf("uh oh");
+    }
 }
 
 void uninit_timer()
