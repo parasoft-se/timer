@@ -4,6 +4,7 @@
 
 # Enable C/C++test code coverage integration:
 #   cmake -DCPPTEST_COVERAGE=ON ...
+include(CMakePrintHelpers)
 option(CPPTEST_COVERAGE "Enable C/C++test code coverage integration")
 
 function (cpptest_enable_coverage)
@@ -27,6 +28,7 @@ function (cpptest_enable_coverage)
   set(CPPTEST_COMPILER_ID "gcc_13-64")
   # Configure coverage type(s) for instrumentation engine - see 'cpptestcc -help' for details
   set(CPPTEST_COVERAGE_TYPE_INSTRUMENTATION -constexpr-coverage -template-coverage -line-coverage -statement-coverage -block-coverage -decision-coverage -simple-condition-coverage -mcdc-coverage -function-coverage -call-coverage)
+  #set(CPPTEST_COVERAGE_TYPE_INSTRUMENTATION -line-coverage)
   # Configure coverage type(s) for reporting engine - see 'cpptestcov -help' for details
   set(CPPTEST_COVERAGE_TYPE_REPORT "LC,SC,BC,DC,SCC,MCDC,FC,CC" )
   # Configure C/C++test project name
@@ -36,15 +38,16 @@ function (cpptest_enable_coverage)
   # Configure coverage log file
   set(CPPTEST_COVERAGE_LOG_FILE ${CPPTEST_COVERAGE_WORKSPACE}/${CPPTEST_PROJECT_NAME}.clog)
   # Configure C/C++test installation directory
-  set(CPPTEST_HOME "" CACHE STRING "C/C++test installation directory")
   if(CPPTEST_HOME)
     set(CPPTEST_HOME_DIR ${CPPTEST_HOME})
   else()
     set(CPPTEST_HOME_DIR $ENV{CPPTEST_HOME})
   endif()
   
+  cmake_print_variables(CPPTEST_COVERAGE_WORKSPACE CPPTEST_COVERAGE_LOG_FILE CPPTEST_PROJECT_NAME)
+
   if(NOT CPPTEST_HOME_DIR)
-    message(FATAL_ERROR "$CPPTEST_HOME not set" )
+    message(FATAL_ERROR "CPPTEST_HOME not set" )
   endif()
 
   # Build C/C++test coverage runtime library
@@ -75,6 +78,7 @@ function (cpptest_enable_coverage)
         PARENT_SCOPE)
   else()
     set(CPPTEST_LINKER_FLAGS
+#        "-Wl,--whole-archive \"${CPPTEST_RUNTIME_BUILD_DIR}/libcpptest_static.a\"")
         "-Wl,--whole-archive \"${CPPTEST_RUNTIME_BUILD_DIR}/libcpptest_static.a\" -Wl,--no-whole-archive")
   endif()
 
@@ -113,65 +117,59 @@ function (cpptest_enable_coverage)
   # set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE
   #    "${CPPTEST_CPPTESTCC} ${CPPTEST_CPPTESTCC_OPTS} -- ")
 
-  # Compute coverage data files (.json) into ${CPPTEST_SOURCE_DIR}/.coverage/lastrun
+  # Compute coverage data files (.cov) into ${CPPTEST_SOURCE_DIR}/.coverage
   add_custom_target(cpptestcov-compute
     COMMAND
-    mkdir -p "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
-    && 
-    mkdir -p "${CPPTEST_SOURCE_DIR}/.coverage/lastrun"
+    mkdir -p "${CPPTEST_SOURCE_DIR}/.coverage"
     &&
     ${CPPTEST_HOME_DIR}/bin/cpptestcov compute
         -map="${CPPTEST_COVERAGE_WORKSPACE}/.cpptest/cpptestcc"
         -clog="${CPPTEST_COVERAGE_LOG_FILE}"
-        -out="${CPPTEST_SOURCE_DIR}/.coverage/lastrun"
+        -out="${CPPTEST_SOURCE_DIR}/.coverage"
         -coverage=${CPPTEST_COVERAGE_TYPE_REPORT}
     &&
     ${CPPTEST_HOME_DIR}/bin/cpptestcov index
-        "${CPPTEST_SOURCE_DIR}/.coverage/lastrun" 
+        "${CPPTEST_SOURCE_DIR}/.coverage"   
   )
-  # Merge last-run coverage into cumulative coverage
-  add_custom_target(cpptestcov-merge
-    COMMAND
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov merge
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
-        "${CPPTEST_SOURCE_DIR}/.coverage/lastrun"
-        &&
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov index
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative" 
-  )
-  # Apply coverage suppressions
-  add_custom_target(cpptestcov-suppress
-    COMMAND
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov suppress
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
-  )
-  # Generate coverage reports
+
+  # Generate coverage reports:
+  # - plain text: ${CPPTEST_SOURCE_DIR}/.coverage/coverage.txt
+  # - markdown: ${CPPTEST_SOURCE_DIR}/.coverage/coverage.md
+  # - html: ${CPPTEST_SOURCE_DIR}/.coverage/coverage.html
+  # - console output
   add_custom_target(cpptestcov-report
     COMMAND
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov report lcov
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative" >
-        "${CPPTEST_SOURCE_DIR}/.coverage/coverage.lcov"
+    ${CPPTEST_HOME_DIR}/bin/cpptestcov report text
+        -root ${CPPTEST_SOURCE_DIR}
+        -coverage ${CPPTEST_COVERAGE_TYPE_REPORT}
+        "${CPPTEST_SOURCE_DIR}/.coverage" >
+        "${CPPTEST_SOURCE_DIR}/.coverage/coverage.txt"
     &&
     ${CPPTEST_HOME_DIR}/bin/cpptestcov report markdown
-        -coverage=${CPPTEST_COVERAGE_TYPE_REPORT}
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative" >
+        -root ${CPPTEST_SOURCE_DIR}
+        -coverage ${CPPTEST_COVERAGE_TYPE_REPORT}
+        "${CPPTEST_SOURCE_DIR}/.coverage" >
         "${CPPTEST_SOURCE_DIR}/.coverage/coverage.md"
     &&
     ${CPPTEST_HOME_DIR}/bin/cpptestcov report html
-        -coverage=${CPPTEST_COVERAGE_TYPE_REPORT}
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative" >
-        "${CPPTEST_SOURCE_DIR}/.coverage/coverage.html"
+        -root ${CPPTEST_SOURCE_DIR}
+        -coverage ${CPPTEST_COVERAGE_TYPE_REPORT}
+#        --single-page
+        -code
+        -out "${CPPTEST_SOURCE_DIR}/.coverage/coverage.html"
+        "${CPPTEST_SOURCE_DIR}/.coverage"
     &&
     ${CPPTEST_HOME_DIR}/bin/cpptestcov report text
-        -coverage=${CPPTEST_COVERAGE_TYPE_REPORT}
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
-    &&
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov report suppressions
-        -coverage=${CPPTEST_COVERAGE_TYPE_REPORT}
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
-    &&
-    ${CPPTEST_HOME_DIR}/bin/cpptestcov report mcdc
-        "${CPPTEST_SOURCE_DIR}/.coverage/cumulative"
+        -root ${CPPTEST_SOURCE_DIR}
+        -coverage ${CPPTEST_COVERAGE_TYPE_REPORT}
+        "${CPPTEST_SOURCE_DIR}/.coverage"
+  )
+
+  # Apply coverage suppressions to existing coverage data files
+  add_custom_target(cpptestcov-suppress
+    COMMAND
+    ${CPPTEST_HOME_DIR}/bin/cpptestcov suppress
+        "${CPPTEST_SOURCE_DIR}/.coverage"
   )
 
 endfunction()
@@ -179,3 +177,6 @@ endfunction()
 if(CPPTEST_COVERAGE)
   cpptest_enable_coverage()
 endif()
+
+
+  

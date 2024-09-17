@@ -1,4 +1,13 @@
 {
-    "image": "cpptest-coverage:latest",
-    "runArgs": [ "--rm" ]
+  "image": "parasoft_iceoryx_demo:latest",
+  "runArgs": [
+    "--rm"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Parasoft.vscode-cpptest"
+      ]
+    }
+  }
 }

@@ -12,13 +12,19 @@
         {
             "label": "(CT)CMake: Run",
             "type": "shell",
-            "command": "bash -c 'cd .build;rm -rf cpptest-coverage/Timer/Timer.clog;./timer;make cpptestcov-compute cpptestcov-merge cpptestcov-suppress cpptestcov-report'",
+            "command": "bash -c 'cd .build;rm -rf cpptest-coverage/Timer/Timer.clog;./timer;make cpptestcov-compute cpptestcov-suppress cpptestcov-report'",
             "group": "build"
         },
         {
             "label": "(CT)CMake: Update Coverage",
             "type": "shell",
             "command": "bash -c 'cd .build;make cpptestcov-suppress cpptestcov-report'",
+            "group": "build"
+        },
+        {
+            "label": "(CT)CMake: Clean",
+            "type": "shell",
+            "command": "bash -c 'cmake --build .build --target clean; rm -Rf .build; rm -Rf .coverage;'",
             "group": "build"
         },
         {
