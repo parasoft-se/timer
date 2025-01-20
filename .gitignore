@@ -5,3 +5,6 @@
 *.clog
 .build
 reports
+timer/
+x64
+win32
