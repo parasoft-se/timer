@@ -6,7 +6,7 @@
         {
             "label": "(CT)CMake: Configure and Build",
             "type": "shell",
-            "command": "bash -c 'cmake -DCPPTEST_COVERAGE=ON -DCPPTEST_HOME=/opt/parasoft/cpptest/2024.2.0/ct -S . -B .build; cmake --build .build'",
+            "command": "bash -c 'cmake -DCPPTEST_COVERAGE=ON -DCPPTEST_HOME=/opt/parasoft/cpptest/2025.1.0/ct -S . -B .build; cmake --build .build'",
             "group": "build"
         },
         {

@@ -1,7 +1,9 @@
 CC=gcc
-COV_TOOL=cpptestcc -compiler gcc_13-64 -line-coverage -statement-coverage -block-coverage -decision-coverage -simple-condition-coverage -mcdc-coverage -function-coverage -call-coverage -workspace .coverage --
+#COV_TOOL=cpptestcc -compiler gcc_13-64 -line-coverage -statement-coverage -block-coverage -decision-coverage -simple-condition-coverage -mcdc-coverage -function-coverage -call-coverage -workspace .coverage --
+COV_TOOL=
 INCLUDE_FLAGS=-I.
-LINK_FLAGS=/opt/parasoft/cpptest/ct/2024.1.0/runtime/build/cpptest.o
+#LINK_FLAGS=/opt/parasoft/cpptest/ct/2024.1.0/runtime/build/cpptest.o
+LINK_FLAGS=
 DEBUG_FLAGS=
 CFLAGS=-g
 
