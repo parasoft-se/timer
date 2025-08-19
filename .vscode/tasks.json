@@ -28,6 +28,18 @@
             "group": "build"
         },
         {
+            "label": "Bazel: Build & Generate BDF",
+            "type": "shell",
+            "command": "bash -c 'bazel clean; rm *.bdf; bazel build //:Timer; bazel run @cpptest//:bdf --@cpptest//:target=//:Timer --@cpptest//:compiler-config=gcc_13-64 --@cpptest//:project-name=timer'",
+            "group": "build"
+        },
+        {
+            "label": "Bazel: Generate BDF",
+            "type": "shell",
+            "command": "bash -c 'bazel clean; rm *.bdf; bazel run @cpptest//:bdf --@cpptest//:target=//:Timer --@cpptest//:compiler-config=gcc_13-64 --@cpptest//:project-name=timer'",
+            "group": "build"
+        },
+        {
             "label": "Bazel: Configure and Build",
             "type": "shell",
             "command": "bash -c 'bazel clean; bazel run --config=cpptest_coverage'",

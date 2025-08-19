@@ -9,3 +9,6 @@ timer/
 x64
 win32
 report/
+bazel-*
+*.lock
+*.bdf

@@ -15,30 +15,3 @@ cc_binary(
     copts = [ "" ], # copts = [ "-DSTDINPUT" ],
 )
 
-# Be sure to set "path" to C/C++test Coverage installation in WORKSPACE file.
-load("@cpptest//:integration/bazel/cpptest.bzl",
-    "cpptest_generate_bdf",
-    "cpptest_code_coverage_executable"
-)
-targets = [ "Timer" ]
-
-# Generate Timer.bdf file (parameters set in .bazelrc):
-# > bazel run --config=cpptest_bdf
-# Run analysis with Timer.bdf file:
-# > cpptestcli -config "builtin://Recommended Rules" -module . -input Timer.bdf -compiler gcc_10-64
-cpptest_generate_bdf(
-    name = "cpptest_bdf",
-    deps = targets,
-)
-
-# Build test-binary with code coverage instrumentation (parameters set in .bazelrc):
-# > bazel run --config=cpptest_coverage
-# Execute test-binary:
-# > bazel-bin/Timer.elf
-# Generate coverage report:
-# > cpptestcov compute -map .cpptest -clog cpptest_results.clog -out .coverage
-# > cpptestcov report text .coverage
-cpptest_code_coverage_executable(
-    name = "cpptest_coverage",
-    deps = targets, 
-)

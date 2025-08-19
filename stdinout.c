@@ -13,7 +13,7 @@
 /*
  * Grabs input from stdin
  */
-int get_input_digit()
+int get_input_digit() 
 {
     char c;
     int i;

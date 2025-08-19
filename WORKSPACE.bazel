@@ -1,2 +1,5 @@
-# Be sure to set "path" to C/C++test Coverage installation location.
-local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/cov")
+# "path" to C/C++test CT installation location.
+# local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/2025.1.0/ct")
+
+# "path" to C/C++test Standard installation location.
+local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/2025.1.0/std")
