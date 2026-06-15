@@ -1,0 +1,17 @@
+{
+	"servers": {
+		"cpptest-mcp-cc": {
+			"type": "stdio",
+			"command": "/opt/parasoft/cpptest/2026.1.0/ct/integration/mcp/cpptestmcp",
+			"args": [
+				"mcp"
+			]
+		},
+		"cpptest-mcp-sa": {
+			"type": "stdio",
+			"command": "/opt/parasoft/cpptest/2026.1.0/std/integration/mcp/cpptestmcp",
+			"args": []
+		}
+	},
+	"inputs": []
+}

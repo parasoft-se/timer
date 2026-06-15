@@ -12,3 +12,8 @@ report/
 bazel-*
 *.lock
 *.bdf
+tests/
+.cproject
+.parasoft
+.project
+.settings/

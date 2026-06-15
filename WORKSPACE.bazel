@@ -2,4 +2,4 @@
 # local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/2025.1.0/ct")
 
 # "path" to C/C++test Standard installation location.
-local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/2025.1.0/std")
+local_repository(name = "cpptest", path = "/opt/parasoft/cpptest/2026.1.0/std")
